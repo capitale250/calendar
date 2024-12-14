@@ -20,12 +20,22 @@ function App() {
   if(isLoading) {
     return <></>
   }
+  const getURL = () => {
+    let url =
+      'https://calendar-five-lovat.vercel.app/'
+    // Make sure to include `https://` when not localhost.
+    url = url.startsWith('http') ? url : `https://${url}`
+    // Make sure to include a trailing `/`.
+    url = url.endsWith('/') ? url : `${url}/`
+    return url
+  }
 
   async function googleSignIn() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        scopes: 'https://www.googleapis.com/auth/calendar'
+        scopes: 'https://www.googleapis.com/auth/calendar',
+        redirectTo: getURL()
       }
     });
     if(error) {
@@ -81,7 +91,7 @@ function App() {
   console.log(start);
   console.log(eventName);
   console.log(eventDescription);
-  console.log(emails)
+  console.log(getURL())
   return ( 
   <div className="App"> 
   <div className="form-container"> 
